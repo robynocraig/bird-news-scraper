@@ -21,6 +21,12 @@ var ArticleSchema = new Schema({
     type: String,
     required: true
   },
+  // `link` is required and of type String
+  saved: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   // `note` is an object that stores a Note id
   // The ref property links the ObjectId to the Note model
   // This allows us to populate the Article with an associated Note
@@ -29,6 +35,14 @@ var ArticleSchema = new Schema({
     ref: "Note"
   }
 });
+
+// Custom method `setFullName`
+ArticleSchema.methods.setSaved = function() {
+  // Set the current user's `fullName` to their `firstName` and their `lastName` together
+  this.saved = true
+  // Return the new `fullName`
+  return this.saved;
+};
 
 // This creates our model from the above schema, using mongoose's model method
 var Article = mongoose.model("Article", ArticleSchema);
