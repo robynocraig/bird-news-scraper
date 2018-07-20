@@ -1,23 +1,19 @@
+// NPM packages to require
 var express = require("express");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-
-// Our scraping tools
-// Axios is a promised-based http library, similar to jQuery's Ajax method
-// It works on the client and on the server
 var axios = require("axios");
 var cheerio = require("cheerio");
 
 // Require all models
 var db = require("./models");
 
+// Port the server will be running on
 var PORT = 3000;
 
 // Initialize Express
 var app = express();
-
-// Configure middleware
 
 // Use morgan logger for logging requests
 app.use(logger("dev"));
@@ -29,9 +25,9 @@ app.use(express.static("public"));
 // Connect to the Mongo DB
 mongoose.connect("mongodb://localhost/birdnewsscraper");
 
-// Routes
+// ROUTES
 
-// A GET route for scraping the echoJS website
+// A GET route for scraping the audubon website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with request
   axios.get("https://www.audubon.org/news/birds-news").then(function(response) {
@@ -43,7 +39,7 @@ app.get("/scrape", function(req, res) {
       // Save an empty result object
       var result = {};
 
-      // Add the text and href of every link, and save them as properties of the result object
+      // Add the title, summary and href of every link, and save them as properties of the result object
       result.title = $(this)
         .children("a")
         .text();
@@ -86,12 +82,12 @@ app.get("/articles", function(req, res) {
     });
 });
 
-// Route for getting all Articles saved
+// Route for getting all Articles marked as saved
 app.get("/saved", function(req, res) {
-  // Grab every document in the Articles collection
+  // Grab every document in the Articles collection with saved equal to true
   db.Article.find({ saved: true })
     .then(function(dbArticle) {
-      // If we were able to successfully find Articles, send them back to the client
+      // If we were able to successfully find saved Articles, send them back to the client
       res.json(dbArticle);
     })
     .catch(function(err) {
@@ -100,9 +96,9 @@ app.get("/saved", function(req, res) {
     });
 });
 
-// Route for updating a item to be marked as saved
+// Route for updating an article to be marked as saved
 app.post("/saved/:id", function(req, res) {
-  // Grab every document in the Articles collection
+  // Grab the article id from the params, find that in the db and changed saved to true
   db.Article.findOneAndUpdate({ _id: req.params.id }, {$set: { saved: true }}, { new: true })
     .then(function(dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
@@ -115,11 +111,11 @@ app.post("/saved/:id", function(req, res) {
 });
 
 
-// Route for grabbing a specific Article by id, populate it with it's note
+// Route for grabbing a specific Article by id and populate it with its note
 app.get("/articles/:id", function(req, res) {
-  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db
   db.Article.findOne({ _id: req.params.id })
-    // ..and populate all of the notes associated with it
+    // populate all of the notes associated with it
     .populate("note")
     .then(function(dbArticle) {
       // If we were able to successfully find an Article with the given id, send it back to the client
@@ -136,9 +132,8 @@ app.post("/articles/:id", function(req, res) {
   // Create a new note and pass the req.body to the entry
   db.Note.create(req.body)
     .then(function(dbNote) {
-      // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
-      // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-      // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
+      // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`
+      // Update the Article to be associated with the new Note
       return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
     })
     .then(function(dbArticle) {
@@ -153,7 +148,7 @@ app.post("/articles/:id", function(req, res) {
 
 // Route for deleting a note
 app.get("/note/:id", function(req, res) {
-  // Grab every document in the Articles collection
+  // Grab the article id from the params, find that in the db and remove the associated note
   db.Article.update({ _id: req.params.id },{ $unset: { note: ""}})
     .then(function(dbNote) {
       // If we were able to successfully find Articles, send them back to the client

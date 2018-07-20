@@ -3,8 +3,6 @@ $.getJSON("/articles", function(data) {
   // For each one
   for (var i = 0; i < data.length; i++) {
 
-    // var domain = ("https://www.audubon.org" + result.link)
-
     // Display the article details information on the page
     $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].summary + "<br />" + "https://www.audubon.org" + data[i].link + "</p>");
     $("#articles").append("<button data-id='" + data[i]._id + "' id='savearticle'>Save Article</button>");
@@ -18,14 +16,13 @@ $("#scrape").on("click", function() {
     type: "GET",
     dataType: "json",
     url: "/scrape",
-    //On a successful call, clear the #results section
     success: function(response) {
       $("#articles").empty();
     }
   });
 });
 
-// When you click the savearticle button
+// When you click the #savearticle button
 $(document).on("click", "#savearticle", function() {
   // Grab the id associated with the article from the save button
   var thisId = $(this).attr("data-id");
@@ -42,13 +39,14 @@ $(document).on("click", "#savearticle", function() {
     });
 });
 
-// redirect to saved page
+// button click redirect to saved page
 $("#gotosaved").on("click", function (event) {
 
   window.location.href = "/saved.html";
 
 });
 
+// Grab the saved articles as a JSON
 $.getJSON("/saved", function(data) {
   // For each one
   for (var i = 0; i < data.length; i++) {
@@ -58,7 +56,7 @@ $.getJSON("/saved", function(data) {
   }
 });
 
-// Whenever someone clicks a p tag
+// This will be the note display code
 $(document).on("click", "p", function() {
   // Empty the notes from the note section
   $("#details").empty();
@@ -94,7 +92,7 @@ $(document).on("click", "p", function() {
     });
 });
 
-// When you click the savenote button
+// When you click the #savenote button
 $(document).on("click", "#savenote", function() {
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
@@ -123,12 +121,12 @@ $(document).on("click", "#savenote", function() {
   $("#bodyinput").val("");
 });
 
-// When you click the delete note button
+// When you click the #deletenote button
 $(document).on("click", "#deletenote", function() {
-  // Grab the id associated with the article from the save button
+  // Grab the id associated with the article from the delete button
   var thisId = $(this).attr("data-id");
 
-  // Run a POST request to access that saved id
+  // Run a POST request to access that article id
   $.ajax({
     method: "GET",
     url: "/note/" + thisId,
@@ -140,7 +138,7 @@ $(document).on("click", "#deletenote", function() {
     });
 });
 
-// redirect to main page
+// button click redirect to main page
 $("#gotohome").on("click", function (event) {
 
   window.location.href = "/";
