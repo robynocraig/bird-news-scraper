@@ -36,14 +36,6 @@ var ArticleSchema = new Schema({
   }
 });
 
-// Custom method `setFullName`
-ArticleSchema.methods.setSaved = function() {
-  // Set the current user's `fullName` to their `firstName` and their `lastName` together
-  this.saved = true
-  // Return the new `fullName`
-  return this.saved;
-};
-
 // This creates our model from the above schema, using mongoose's model method
 var Article = mongoose.model("Article", ArticleSchema);
 

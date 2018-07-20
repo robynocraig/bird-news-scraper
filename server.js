@@ -151,6 +151,21 @@ app.post("/articles/:id", function(req, res) {
     });
 });
 
+// Route for deleting a note
+app.get("/note/:id", function(req, res) {
+  // Grab every document in the Articles collection
+  db.Article.update({ _id: req.params.id },{ $unset: { note: ""}})
+    .then(function(dbNote) {
+      // If we were able to successfully find Articles, send them back to the client
+      res.json(dbNote);
+      console.log("Your note was deleted.");
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
 // Start the server
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");

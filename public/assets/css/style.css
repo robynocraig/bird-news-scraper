@@ -16,6 +16,13 @@ body {
   width: 60%;
 }
 
+#savedarticles {
+  display: inline-block;
+  overflow: auto;
+  height: 700px;
+  width: 60%;
+}
+
 #details {
   float: right;
   width: 30%;
