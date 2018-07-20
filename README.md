@@ -1,3 +1,3 @@
 # bird-news-scraper
 
-https://git.heroku.com/bird-news-scraper.git
+https://bird-news-scraper.herokuapp.com/
