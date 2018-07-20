@@ -35,6 +35,11 @@ mongoose.connect(MONGODB_URI);
 
 // ROUTES
 
+// Route for displaying the homepage
+app.get("/", function(req, res) {
+  res.render("index");
+});
+
 // A GET route for scraping the audubon website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with request
