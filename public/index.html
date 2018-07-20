@@ -5,13 +5,22 @@
     <title>Scraping With Mongoose</title>
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
   </head>
   <body>
     <div id="wrapper">
-      <h1>Note Scraper</h1>
 
-      <button type="button" class="btn btn-danger" id="scrape" data-toggle="modal" data-target="#scrapeModal">Scrape!</button>
-      <button type="button" class="btn btn-danger" id="gotosaved">Saved Articles</button>
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4"><i class="fab fa-earlybirds"></i> THE BIRD'S NEST <i class="far fa-newspaper"></i></h1>
+          <p class="lead">Press "Scrape" below to get started reading bird news.</p>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button type="button" class="btn btn-danger btn-lg" id="scrape" data-toggle="modal" data-target="#scrapeModal">Scrape!</button>
+        <button type="button" class="btn btn-primary btn-lg" id="gotosaved">View Your Saved Articles</button>
+      </div>
 
       <div class="modal fade" id="scrapeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -32,7 +41,7 @@
         </div>
       </div>
 
-      <h2><i>Get your bird news here!</i></h2>
+      <h3><i>Get your bird news here!</i></h3>
       <div id="articles"></div>
       <div id="details"></div>
     </div>

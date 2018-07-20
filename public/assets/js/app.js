@@ -74,7 +74,7 @@ $(document).on("click", "p", function() {
     .then(function(data) {
       console.log(data);
       // The title of the article
-      $("#details").append("<h2>" + data.title + "</h2>");
+      $("#details").append("<h3>" + data.title + "</h3>");
       // An input to enter a new title
       $("#details").append("<input id='titleinput' name='title' >");
       // A textarea to add a new note body
@@ -138,4 +138,11 @@ $(document).on("click", "#deletenote", function() {
       // Log the response
       console.log(data);
     });
+});
+
+// redirect to main page
+$("#gotohome").on("click", function (event) {
+
+  window.location.href = "/";
+
 });
